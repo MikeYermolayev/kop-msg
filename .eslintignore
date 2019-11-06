@@ -1,0 +1,5 @@
+**/*.css
+**/*.scss
+**/*.json
+dist
+node_modules
