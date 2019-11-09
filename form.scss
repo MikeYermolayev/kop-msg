@@ -1,0 +1,65 @@
+.field {
+    position: relative;
+    & > label {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        color: #a2acb4;
+        padding: 0 4px;
+        transition: all 0.3s ease-out;
+    }
+
+    &__input {
+        text-align: left;
+        padding: 15px 20px;
+        background: transparent;
+        width: 100%;
+        border: 1px #dadce0 solid;
+        border-radius: 8px;
+
+        &:hover {
+            border-color: #000;
+        }
+    }
+
+    &__dropdown {
+        display: none;
+        margin-top: 8px;
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+        background-color: #fff;
+        max-height: 35.7vh;
+        overflow: scroll;
+        border-radius: 8px;
+        box-shadow: 0px 0px 8px 0px rgba(205, 205, 205, 1);
+
+        & > li {
+            cursor: pointer;
+            padding-left: 4.17%;
+            padding-right: 4.72%;
+            padding-top: 5.33%;
+            padding-bottom: 5.33%;
+            &:hover {
+                background-color: #f4f4f5;
+            }
+        }
+    }
+
+    &__dirty > label {
+        transform: translateY(-20px) translateX(-4px);
+        font-size: 0.69rem;
+        background-color: #fff;
+    }
+    &__focused > &__input {
+        border-color: #4ea4f6;
+        caret-color: #4ea4f6;
+    }
+    &__focused > &__label {
+        color: #4ea4f6;
+    }
+    &__focused > &__dropdown,
+    &__input:focus + &__dropdown {
+        display: block;
+    }
+}

@@ -1,6 +1,50 @@
 #login {
+    padding-top: 10.3vh;
     width: 21.43%;
     min-width: 360px;
     margin: auto;
     text-align: center;
+}
+
+#logo {
+    width: 44.4%;
+    margin-bottom: 50px;
+}
+
+.field {
+    margin-bottom: 24px;
+}
+
+#description {
+    margin-bottom: 50px;
+    color: #7e8286;
+}
+
+#country-list > li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.code {
+    color: #93979a;
+}
+
+.country-name {
+    flex-grow: 1;
+    padding-left: 8.33%;
+    text-align: left;
+}
+
+#keep-field {
+    text-align: left;
+}
+
+#keep {
+    margin-left: 5.56%;
+    margin-right: 9.72%;
+}
+
+li > span {
+    pointer-events: none;
 }
