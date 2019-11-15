@@ -2,12 +2,26 @@ import { clear } from './utils/clear';
 
 var app = document.getElementById('app');
 
-const routes = {
-    '/': import('./pages/login'),
+const pages = {
+    '/': [import('./pages/login'), import('./pages/sms')],
 };
 
-routes['/'].then(function onRoute(page) {
-    clear(app);
+function loadPage(page, state) {
+    return pages[page][state.step].then(function onRoute(content) {
+        clear(app);
 
-    app.appendChild(page.render());
-});
+        app.appendChild(content.render());
+    });
+}
+
+export function navigate(page, state) {
+    return loadPage(page, state).then(function onLoad() {
+        history.pushState(state, '', '/');
+    });
+}
+
+navigate('/', { step: 0 });
+
+window.onpopstate = function(event) {
+    loadPage(document.location.pathname, event.state);
+};

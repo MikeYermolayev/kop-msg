@@ -1,7 +1,8 @@
-export function renderSvg(template) {
-    const div = document.createElement('div');
+export function renderSvg(className, template) {
+    const span = document.createElement('span');
 
-    div.innerHTML = template;
+    span.innerHTML = template;
+    span.firstChild.classList.add(className);
 
-    return div.firstChild;
+    return span.firstChild;
 }

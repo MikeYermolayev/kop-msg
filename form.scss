@@ -2,8 +2,6 @@
 
 .field {
     position: relative;
-    min-height: 54px;
-    height: 5.14%;
 
     & > label {
         position: absolute;
@@ -17,6 +15,13 @@
         transition: all 150ms ease-out;
     }
 
+    &__dropdown {
+        display: none;
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+    }
+
     &__mark {
         min-width: 16px;
         width: 4.44%;
@@ -26,14 +31,13 @@
         transform: translateY(-50%);
         right: 15px;
         cursor: pointer;
-        transition: color 150ms ease-out;
+        transition: all 150ms ease-out;
+        transform-origin: center center;
     }
 
     &__input {
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
+        min-height: 54px;
+        height: 5.14%;
         text-align: left;
         padding: 0 15px;
         background: transparent;
@@ -49,6 +53,10 @@
 
             & ~ .field__mark {
                 color: $blue;
+                transform: rotate(180deg) translateY(50%);
+            }
+            & ~ .field__dropdown {
+                display: block;
             }
         }
     }
@@ -88,7 +96,7 @@
     color: $white;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.92rem;
+    font-weight: 500;
 
     display: none;
     &__visible {

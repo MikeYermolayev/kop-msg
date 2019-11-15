@@ -5,8 +5,9 @@ import downMark from '../assets/icons/down_svg.html';
 import { renderSvg } from '../utils/renderSvg';
 import { openPopup, hidePopup } from '../utils/popup';
 import { prepareRipple } from '../utils/ripple';
+import { navigate } from '../router';
 
-export function render() {
+export function render(state) {
     function onInput(event) {
         if (event.currentTarget.value.length > 0) {
             event.currentTarget.parentNode.classList.add('field__dirty');
@@ -26,6 +27,7 @@ export function render() {
     function buildCountryField() {
         const countryList = document.createElement('ul');
         countryList.id = 'country-list';
+        countryList.className = 'field__dropdown';
 
         countryList.addEventListener('mouseover', (event) => {
             countryLabel.innerText = event.target.getAttribute('data-name');
@@ -35,9 +37,11 @@ export function render() {
             countryInput.value = event.target.getAttribute('data-name');
             countryField.classList.add('field__dirty');
 
-            if (phoneInput.value.length) {
-                btn.classList.add('submit__visible');
-            }
+            phoneInput.value = event.target.getAttribute('data-code');
+            phoneField.classList.add('field__dirty');
+
+            setTimeout(() => phoneInput.focus(), 0);
+
             hidePopup();
         });
 
@@ -66,6 +70,7 @@ export function render() {
             li.appendChild(countryName);
             li.appendChild(dialCode);
             li.setAttribute('data-name', country.name);
+            li.setAttribute('data-code', country.dialCode);
 
             fragment.appendChild(li);
         });
@@ -75,9 +80,6 @@ export function render() {
         const countryField = document.createElement('div');
         countryField.id = 'country-field';
         countryField.className = 'field';
-        countryField.addEventListener('mousedown', function onMousedown() {
-            openPopup(countryField, countryList);
-        });
 
         const countryInput = document.createElement('input');
         countryInput.autocomplete = 'off';
@@ -87,7 +89,9 @@ export function render() {
         countryInput.type = 'text';
         countryInput.addEventListener('input', onInput);
         countryInput.addEventListener('blur', () => {
-            hidePopup();
+            if (!countryInput.value) {
+                countryLabel.innerText = 'Country';
+            }
         });
 
         const countryLabel = document.createElement('label');
@@ -95,12 +99,12 @@ export function render() {
         countryLabel.setAttribute('for', 'country');
         countryLabel.innerText = 'Country';
 
-        const mark = renderSvg(downMark);
-        mark.classList.add('field__mark');
+        const mark = renderSvg('field__mark', downMark);
 
         countryField.appendChild(countryInput);
         countryField.appendChild(countryLabel);
         countryField.appendChild(mark);
+        countryField.appendChild(countryList);
 
         return countryField;
     }
@@ -121,6 +125,10 @@ export function render() {
     h3.innerText = 'Please confirm your country and enter your phone number.';
 
     const form = document.createElement('form');
+    form.onsubmit = function onSubmit(e) {
+        e.preventDefault();
+        navigate('/', { step: 1 });
+    };
 
     const btn = document.createElement('button');
     btn.className = 'submit';
@@ -137,7 +145,7 @@ export function render() {
     phoneInput.id = 'phone';
     phoneInput.type = 'tel';
     phoneInput.required = true;
-    phoneInput.addEventListener('input', onInput);
+    phoneInput.oninput = onInput;
 
     const phoneLabel = document.createElement('label');
     phoneLabel.setAttribute('for', 'phone');
@@ -162,11 +170,12 @@ export function render() {
     page.appendChild(logo);
     page.appendChild(h1);
     page.appendChild(h3);
-    // page.appendChild(form);
-    page.appendChild(countryField);
-    page.appendChild(phoneField);
-    page.appendChild(keepField);
-    page.appendChild(btn);
+
+    form.appendChild(countryField);
+    form.appendChild(phoneField);
+    form.appendChild(keepField);
+    form.appendChild(btn);
+    page.appendChild(form);
 
     return page;
 }
