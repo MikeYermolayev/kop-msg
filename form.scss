@@ -1,65 +1,101 @@
+@import './vars.scss';
+
 .field {
     position: relative;
+    min-height: 54px;
+    height: 5.14%;
+
     & > label {
         position: absolute;
-        top: 15px;
-        left: 20px;
-        color: #a2acb4;
-        padding: 0 4px;
-        transition: all 0.3s ease-out;
+        top: 50%;
+        transform: translateY(-50%);
+        user-select: none;
+        cursor: text;
+        left: 15px;
+        color: $darkgrey;
+        padding: 5px;
+        transition: all 150ms ease-out;
+    }
+
+    &__mark {
+        min-width: 16px;
+        width: 4.44%;
+        color: $darkgrey;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 15px;
+        cursor: pointer;
+        transition: color 150ms ease-out;
     }
 
     &__input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
         text-align: left;
-        padding: 15px 20px;
+        padding: 0 15px;
         background: transparent;
         width: 100%;
-        border: 1px #dadce0 solid;
+        border: 1px solid $lightgrey;
         border-radius: 8px;
+        transition: border-color 150ms ease-out;
 
-        &:hover {
-            border-color: #000;
-        }
-    }
+        &:focus {
+            border-color: $blue;
+            border-width: 2px;
+            caret-color: $blue;
 
-    &__dropdown {
-        display: none;
-        margin-top: 8px;
-        position: absolute;
-        width: 100%;
-        z-index: 1;
-        background-color: #fff;
-        max-height: 35.7vh;
-        overflow: scroll;
-        border-radius: 8px;
-        box-shadow: 0px 0px 8px 0px rgba(205, 205, 205, 1);
-
-        & > li {
-            cursor: pointer;
-            padding-left: 4.17%;
-            padding-right: 4.72%;
-            padding-top: 5.33%;
-            padding-bottom: 5.33%;
-            &:hover {
-                background-color: #f4f4f5;
+            & ~ .field__mark {
+                color: $blue;
             }
         }
     }
 
-    &__dirty > label {
-        transform: translateY(-20px) translateX(-4px);
-        font-size: 0.69rem;
-        background-color: #fff;
+    &__dirty {
+        & > label {
+            top: 0;
+            left: 10px;
+            font-size: 0.77rem;
+            background-color: #fff;
+        }
+
+        & > .field__input:focus + label {
+            color: $blue;
+            font-weight: 500;
+        }
     }
-    &__focused > &__input {
-        border-color: #4ea4f6;
-        caret-color: #4ea4f6;
+    &:hover {
+        .field__input:not(:focus) {
+            border-color: $black;
+
+            & ~ .field__mark {
+                color: $black;
+            }
+        }
     }
-    &__focused > &__label {
-        color: #4ea4f6;
-    }
-    &__focused > &__dropdown,
-    &__input:focus + &__dropdown {
+}
+
+.submit {
+    min-height: 54px;
+    height: 5.14%;
+    width: 100%;
+    padding: 0;
+    border: 0;
+
+    background-color: $blue;
+    color: $white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.92rem;
+
+    display: none;
+    &__visible {
         display: block;
+    }
+
+    &:hover {
+        background-color: mix($black, $blue, 8);
     }
 }
