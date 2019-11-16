@@ -3,11 +3,10 @@ import './login.scss';
 import logoSvg from '../assets/logo.svg';
 import downMark from '../assets/icons/down_svg.html';
 import { renderSvg } from '../utils/renderSvg';
-import { openPopup, hidePopup } from '../utils/popup';
 import { prepareRipple } from '../utils/ripple';
 import { navigate } from '../router';
 
-export function render(state) {
+export function render() {
     function onInput(event) {
         if (event.currentTarget.value.length > 0) {
             event.currentTarget.parentNode.classList.add('field__dirty');
@@ -24,91 +23,6 @@ export function render(state) {
         }
     }
 
-    function buildCountryField() {
-        const countryList = document.createElement('ul');
-        countryList.id = 'country-list';
-        countryList.className = 'field__dropdown';
-
-        countryList.addEventListener('mouseover', (event) => {
-            countryLabel.innerText = event.target.getAttribute('data-name');
-        });
-
-        countryList.addEventListener('mousedown', (event) => {
-            countryInput.value = event.target.getAttribute('data-name');
-            countryField.classList.add('field__dirty');
-
-            phoneInput.value = event.target.getAttribute('data-code');
-            phoneField.classList.add('field__dirty');
-
-            setTimeout(() => phoneInput.focus(), 0);
-
-            hidePopup();
-        });
-
-        countryList.addEventListener('mouseleave', () => {
-            countryLabel.innerText = 'Country';
-        });
-
-        const fragment = document.createDocumentFragment();
-
-        config.countries.forEach(function onEach(country) {
-            const li = document.createElement('li');
-
-            const flag = document.createElement('span');
-            flag.innerText = country.emoji;
-            flag.className = 'flag';
-
-            const countryName = document.createElement('span');
-            countryName.innerText = country.name;
-            countryName.className = 'country-name';
-
-            const dialCode = document.createElement('span');
-            dialCode.innerText = country.dialCode;
-            dialCode.className = 'code';
-
-            li.appendChild(flag);
-            li.appendChild(countryName);
-            li.appendChild(dialCode);
-            li.setAttribute('data-name', country.name);
-            li.setAttribute('data-code', country.dialCode);
-
-            fragment.appendChild(li);
-        });
-
-        countryList.appendChild(fragment);
-
-        const countryField = document.createElement('div');
-        countryField.id = 'country-field';
-        countryField.className = 'field';
-
-        const countryInput = document.createElement('input');
-        countryInput.autocomplete = 'off';
-        countryInput.required = true;
-        countryInput.className = 'field__input';
-        countryInput.id = 'country';
-        countryInput.type = 'text';
-        countryInput.addEventListener('input', onInput);
-        countryInput.addEventListener('blur', () => {
-            if (!countryInput.value) {
-                countryLabel.innerText = 'Country';
-            }
-        });
-
-        const countryLabel = document.createElement('label');
-        countryLabel.id = 'country-label';
-        countryLabel.setAttribute('for', 'country');
-        countryLabel.innerText = 'Country';
-
-        const mark = renderSvg('field__mark', downMark);
-
-        countryField.appendChild(countryInput);
-        countryField.appendChild(countryLabel);
-        countryField.appendChild(mark);
-        countryField.appendChild(countryList);
-
-        return countryField;
-    }
-
     const page = document.createElement('div');
     page.id = 'login';
 
@@ -120,14 +34,15 @@ export function render(state) {
     const h1 = document.createElement('h1');
     h1.innerText = 'Sign in to Telegram';
 
-    const h3 = document.createElement('h3');
-    h3.id = 'description';
-    h3.innerText = 'Please confirm your country and enter your phone number.';
+    const h4 = document.createElement('h4');
+    h4.id = 'description';
+    h4.innerText = 'Please confirm your country and enter your phone number.';
 
     const form = document.createElement('form');
-    form.onsubmit = function onSubmit(e) {
+    form.onsubmit = function(e) {
         e.preventDefault();
-        navigate('/', { step: 1 });
+
+        navigate('/', { step: 1, phone: phoneInput.value });
     };
 
     const btn = document.createElement('button');
@@ -135,7 +50,86 @@ export function render(state) {
     btn.innerText = 'NEXT';
     prepareRipple(btn);
 
-    const countryField = buildCountryField(btn);
+    const countryList = document.createElement('ul');
+    countryList.id = 'country-list';
+    countryList.className = 'field__dropdown';
+
+    countryList.onmouseover = function(event) {
+        countryLabel.innerText = event.target.getAttribute('data-name');
+    };
+
+    countryList.onmousedown = function(event) {
+        countryInput.value = event.target.getAttribute('data-name');
+        countryField.classList.add('field__dirty');
+
+        phoneInput.value = event.target.getAttribute('data-code');
+        phoneField.classList.add('field__dirty');
+
+        setTimeout(() => phoneInput.focus(), 0);
+    };
+
+    countryList.onmouseleave = function() {
+        countryLabel.innerText = 'Country';
+    };
+
+    const fragment = document.createDocumentFragment();
+
+    config.countries.forEach(function onEach(country) {
+        const li = document.createElement('li');
+
+        const flag = document.createElement('span');
+        flag.innerText = country.emoji;
+        flag.className = 'flag';
+
+        const countryName = document.createElement('span');
+        countryName.innerText = country.name;
+        countryName.className = 'country-name';
+
+        const codeValue = country.dialCode || '+';
+
+        const dialCode = document.createElement('span');
+        dialCode.innerText = codeValue;
+        dialCode.className = 'code';
+
+        li.appendChild(flag);
+        li.appendChild(countryName);
+        li.appendChild(dialCode);
+        li.setAttribute('data-name', country.name);
+        li.setAttribute('data-code', codeValue);
+
+        fragment.appendChild(li);
+    });
+
+    countryList.appendChild(fragment);
+
+    const countryField = document.createElement('div');
+    countryField.id = 'country-field';
+    countryField.className = 'field';
+
+    const countryInput = document.createElement('input');
+    countryInput.autocomplete = 'off';
+    countryInput.required = true;
+    countryInput.className = 'field__input';
+    countryInput.id = 'country';
+    countryInput.type = 'text';
+    countryInput.oninput = onInput;
+    countryInput.onblur = function() {
+        if (!countryInput.value) {
+            countryLabel.innerText = 'Country';
+        }
+    };
+
+    const countryLabel = document.createElement('label');
+    countryLabel.id = 'country-label';
+    countryLabel.setAttribute('for', 'country');
+    countryLabel.innerText = 'Country';
+
+    const mark = renderSvg('field__mark', downMark);
+
+    countryField.appendChild(countryInput);
+    countryField.appendChild(countryLabel);
+    countryField.appendChild(mark);
+    countryField.appendChild(countryList);
 
     const phoneField = document.createElement('div');
     phoneField.className = 'field';
@@ -169,7 +163,7 @@ export function render(state) {
 
     page.appendChild(logo);
     page.appendChild(h1);
-    page.appendChild(h3);
+    page.appendChild(h4);
 
     form.appendChild(countryField);
     form.appendChild(phoneField);
@@ -177,5 +171,5 @@ export function render(state) {
     form.appendChild(btn);
     page.appendChild(form);
 
-    return page;
+    return Promise.resolve(page);
 }

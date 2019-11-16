@@ -7,20 +7,22 @@ const pages = {
 };
 
 function loadPage(page, state) {
-    return pages[page][state.step].then(function onRoute(content) {
+    return pages[page][state.step].then(function(content) {
         clear(app);
 
-        app.appendChild(content.render());
+        return content.render(state).then(function(rendered) {
+            app.appendChild(rendered);
+        });
     });
 }
 
 export function navigate(page, state) {
-    return loadPage(page, state).then(function onLoad() {
+    return loadPage(page, state).then(function() {
         history.pushState(state, '', '/');
     });
 }
 
-navigate('/', { step: 0 });
+navigate('/', { step: 0, phone: '+375298231302' });
 
 window.onpopstate = function(event) {
     loadPage(document.location.pathname, event.state);

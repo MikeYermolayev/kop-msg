@@ -10,7 +10,7 @@ export function prepareRipple(el) {
         rippleDiv.setAttribute('style', 'top:' + Y + 'px; left:' + X + 'px;');
         el.appendChild(rippleDiv);
         setTimeout(function() {
-            rippleDiv.parentElement.removeChild(rippleDiv);
+            rippleDiv.parentNode.removeChild(rippleDiv);
         }, 700);
     });
 }

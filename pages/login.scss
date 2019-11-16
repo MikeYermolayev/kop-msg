@@ -1,5 +1,4 @@
 @import './vars.scss';
-@import './form.scss';
 
 #login {
     padding-top: 10.3vh;
@@ -16,11 +15,6 @@
 
 .field {
     margin-bottom: 24px;
-}
-
-#description {
-    margin-bottom: 50px;
-    color: $darkgrey;
 }
 
 #country-list {
