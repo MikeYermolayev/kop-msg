@@ -19,7 +19,6 @@ a {
 
 body {
     margin: 0;
-    line-height: 1;
 }
 
 #app,
@@ -43,9 +42,13 @@ ul {
     padding: 0;
 }
 
+h2,
 h4 {
     color: $darkgrey;
     font-weight: 400;
+}
+
+h4 {
     margin-bottom: 3.125rem;
     max-width: 63.9%;
     margin-left: auto;
@@ -58,12 +61,16 @@ h4 {
 
     .ripple {
         position: absolute;
-        background: $black;
+        background-color: $black;
         border-radius: 50%;
-        width: 10px;
-        height: 10px;
+        width: 1px;
+        height: 1px;
         animation: rippleEffect 0.7s ease forwards;
         opacity: 0.08;
+
+        &.rp-light {
+            background-color: $darkgrey;
+        }
     }
 
     &.rps {
@@ -86,7 +93,7 @@ button {
         opacity: 0.08;
     }
     100% {
-        transform: scale(100);
+        transform: scale(1000);
         opacity: 0;
     }
 }
@@ -103,8 +110,4 @@ button {
         transform: scale(100);
         opacity: 0;
     }
-}
-
-svg {
-    pointer-events: none;
 }

@@ -1,0 +1,12 @@
+.chatItem {
+    border-radius: 10px;
+    padding: 9px;
+    transition: background-color 150ms ease-out;
+
+    &__avatar {
+        width: 54px;
+        height: 54px;
+        background-color: aquamarine;
+        border-radius: 50%;
+    }
+}

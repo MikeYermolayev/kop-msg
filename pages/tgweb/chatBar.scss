@@ -1,0 +1,69 @@
+@import '../../vars.scss';
+
+#chatBar {
+    &__header {
+        height: 5.52%;
+        min-height: 58px;
+        padding: 8px 14px 6px 14px;
+        display: flex;
+        align-items: center;
+    }
+    &__menu {
+        flex-shrink: 0;
+        height: 44px;
+        width: 44px;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        border-radius: 50%;
+        transition: background-color 150ms ease-out;
+        color: $darkgrey;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $light;
+        }
+    }
+    &__menuIcon {
+        width: 24px;
+        margin: auto;
+    }
+
+    &__searchField {
+        position: relative;
+        height: 100%;
+        flex-grow: 1;
+
+        &_icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 24px;
+            color: $grey;
+            transition: color 150ms ease-out;
+        }
+
+        &_input {
+            font-size: 1rem;
+            height: 100%;
+            width: 100%;
+            padding: 0 16px 0 40px;
+            background-color: $light;
+            border: 2px solid transparent;
+            border-radius: 22px;
+            transition: all 150ms ease-out;
+
+            &:focus {
+                background-color: $white;
+                border-color: $blue;
+                & + #chatBar__searchField_icon {
+                    color: $blue;
+                }
+            }
+        }
+    }
+    &__pinnedList {
+        border-bottom: 1px solid $lightgrey;
+    }
+}

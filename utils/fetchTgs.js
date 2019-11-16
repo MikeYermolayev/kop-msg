@@ -23,6 +23,8 @@ export function fetchTgs(path) {
                         const data = pako.inflate(xhr.response, {
                             to: 'string',
                         });
+                        window.AYE = data;
+
                         return resolve(JSON.parse(data));
                     } catch (err) {
                         return reject(err);

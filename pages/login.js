@@ -6,8 +6,13 @@ import { renderSvg } from '../utils/renderSvg';
 import { prepareRipple } from '../utils/ripple';
 import { navigate } from '../router';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
+import { validate } from '../utils/validate';
 
 export function render(state) {
+    const COUNTRY_LABEL = 'Country';
+    const PHONE_LABEL = 'Phone number';
+    const PHONE_ERROR = 'Invalid phone number';
+
     function onInput(event) {
         if (event.currentTarget.value.length > 0) {
             event.currentTarget.parentNode.classList.add('field__dirty');
@@ -24,6 +29,21 @@ export function render(state) {
         }
     }
 
+    function getPhoneError(value) {
+        if (!value) {
+            return;
+        }
+        try {
+            const phoneNumber = parsePhoneNumberFromString(value);
+
+            if (!phoneNumber || !phoneNumber.isValid()) {
+                return PHONE_ERROR;
+            }
+        } catch (err) {
+            return err.message;
+        }
+    }
+
     function selectCountry(name, phone) {
         countryInput.value = name;
         countryField.classList.add('field__dirty');
@@ -31,7 +51,9 @@ export function render(state) {
         phoneInput.value = phone;
         phoneField.classList.add('field__dirty');
 
-        setTimeout(() => phoneInput.focus(), 0);
+        setTimeout(function() {
+            phoneInput.focus();
+        }, 0);
     }
 
     const page = document.createElement('div');
@@ -52,12 +74,13 @@ export function render(state) {
     const form = document.createElement('form');
     form.onsubmit = function(e) {
         e.preventDefault();
-
-        navigate('/', {
-            step: 1,
-            phone: phoneInput.value,
-            country: countryInput.value,
-        });
+        if (validate(phoneInput, phoneLabel, getPhoneError, PHONE_LABEL)) {
+            navigate('/', {
+                step: 1,
+                phone: phoneInput.value,
+                country: countryInput.value,
+            });
+        }
     };
 
     const btn = document.createElement('button');
@@ -78,16 +101,23 @@ export function render(state) {
     countryInput.oninput = onInput;
     countryInput.onblur = function() {
         if (!countryInput.value) {
-            countryLabel.innerText = 'Country';
+            countryLabel.innerText = COUNTRY_LABEL;
         }
     };
 
     const countryLabel = document.createElement('label');
     countryLabel.id = 'country-label';
     countryLabel.setAttribute('for', 'country');
-    countryLabel.innerText = 'Country';
+    countryLabel.innerText = COUNTRY_LABEL;
 
-    const mark = renderSvg(downMark, 'field__mark');
+    const mark = renderSvg(downMark, 'field__icon field__icon_rotate');
+    mark.onmousedown = function() {
+        if (document.activeElement !== countryInput) {
+            setTimeout(function() {
+                countryInput.focus();
+            }, 0);
+        }
+    };
 
     const countryList = document.createElement('ul');
     countryList.id = 'country-list';
@@ -105,7 +135,7 @@ export function render(state) {
     };
 
     countryList.onmouseleave = function() {
-        countryLabel.innerText = 'Country';
+        countryLabel.innerText = COUNTRY_LABEL;
     };
 
     const fragment = document.createDocumentFragment();
@@ -151,23 +181,22 @@ export function render(state) {
     phoneInput.id = 'phone';
     phoneInput.type = 'tel';
     phoneInput.required = true;
-    phoneInput.oninput = function(ev) {
-        const phoneNumber = parsePhoneNumberFromString(phoneInput.value);
-        if (phoneNumber && phoneNumber.isValid()) {
-            phoneInput.value = phoneNumber.formatInternational();
-        } else {
-            phoneField.classList.add('field__error');
-        }
+    phoneInput.oninput = onInput;
+    phoneInput.onblur = function(ev) {
+        if (validate(phoneInput, phoneLabel, getPhoneError, PHONE_LABEL)) {
+            const number = parsePhoneNumberFromString(phoneInput.value);
 
-        onInput(ev);
+            phoneInput.value = number.formatInternational();
+        }
     };
+
     if (state.phone) {
         phoneInput.value = state.phone;
     }
 
     const phoneLabel = document.createElement('label');
     phoneLabel.setAttribute('for', 'phone');
-    phoneLabel.innerText = 'Phone number';
+    phoneLabel.innerText = PHONE_LABEL;
 
     phoneField.appendChild(phoneInput);
     phoneField.appendChild(phoneLabel);
@@ -199,5 +228,5 @@ export function render(state) {
     form.appendChild(btn);
     page.appendChild(form);
 
-    return Promise.resolve(page);
+    return page;
 }

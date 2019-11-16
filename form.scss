@@ -2,7 +2,7 @@
 
 .field {
     position: relative;
-
+    margin-bottom: 1.5rem;
     & > label {
         position: absolute;
         top: 50%;
@@ -22,7 +22,7 @@
         width: 100%;
     }
 
-    &__mark {
+    &__icon {
         min-width: 16px;
         width: 4.44%;
         color: $darkgrey;
@@ -51,7 +51,7 @@
             border-width: 2px;
             caret-color: $blue;
 
-            & ~ .field__mark {
+            & ~ .field__icon_rotate {
                 color: $blue;
                 transform: rotate(180deg) translateY(50%);
             }
@@ -89,7 +89,7 @@
         .field__input:not(:focus) {
             border-color: $black;
 
-            & ~ .field__mark {
+            & ~ .field__icon {
                 color: $black;
             }
         }

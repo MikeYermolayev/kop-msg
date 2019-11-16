@@ -1,0 +1,14 @@
+@import '../../vars.scss';
+
+#emptyChat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    &__placeholder {
+        color: #abb0b3;
+        width: 144px;
+    }
+}
