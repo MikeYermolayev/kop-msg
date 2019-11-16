@@ -23,6 +23,7 @@
     "stylelint-prettier": "^1.1.1"
   },
   "dependencies": {
+    "libphonenumber-js": "^1.7.26",
     "lottie-web": "^5.5.9",
     "pako": "^1.0.10"
   }

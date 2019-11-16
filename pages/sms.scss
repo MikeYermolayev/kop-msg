@@ -11,5 +11,18 @@
 #monkey {
     width: 37.5%;
     height: auto;
+    min-height: 138px;
     margin: auto;
+}
+
+#sms-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#edit-icon {
+    height: 2rem;
+    color: $darkgrey;
 }

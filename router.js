@@ -8,9 +8,8 @@ const pages = {
 
 function loadPage(page, state) {
     return pages[page][state.step].then(function(content) {
-        clear(app);
-
         return content.render(state).then(function(rendered) {
+            clear(app);
             app.appendChild(rendered);
         });
     });
@@ -22,7 +21,7 @@ export function navigate(page, state) {
     });
 }
 
-navigate('/', { step: 0, phone: '+375298231302' });
+navigate('/', { step: 0 });
 
 window.onpopstate = function(event) {
     loadPage(document.location.pathname, event.state);

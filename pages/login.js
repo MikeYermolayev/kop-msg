@@ -5,8 +5,9 @@ import downMark from '../assets/icons/down_svg.html';
 import { renderSvg } from '../utils/renderSvg';
 import { prepareRipple } from '../utils/ripple';
 import { navigate } from '../router';
+import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
 
-export function render() {
+export function render(state) {
     function onInput(event) {
         if (event.currentTarget.value.length > 0) {
             event.currentTarget.parentNode.classList.add('field__dirty');
@@ -21,6 +22,16 @@ export function render() {
             event.currentTarget.parentNode.classList.remove('field__dirty');
             btn.classList.remove('submit__visible');
         }
+    }
+
+    function selectCountry(name, phone) {
+        countryInput.value = name;
+        countryField.classList.add('field__dirty');
+
+        phoneInput.value = phone;
+        phoneField.classList.add('field__dirty');
+
+        setTimeout(() => phoneInput.focus(), 0);
     }
 
     const page = document.createElement('div');
@@ -42,65 +53,17 @@ export function render() {
     form.onsubmit = function(e) {
         e.preventDefault();
 
-        navigate('/', { step: 1, phone: phoneInput.value });
+        navigate('/', {
+            step: 1,
+            phone: phoneInput.value,
+            country: countryInput.value,
+        });
     };
 
     const btn = document.createElement('button');
     btn.className = 'submit';
     btn.innerText = 'NEXT';
     prepareRipple(btn);
-
-    const countryList = document.createElement('ul');
-    countryList.id = 'country-list';
-    countryList.className = 'field__dropdown';
-
-    countryList.onmouseover = function(event) {
-        countryLabel.innerText = event.target.getAttribute('data-name');
-    };
-
-    countryList.onmousedown = function(event) {
-        countryInput.value = event.target.getAttribute('data-name');
-        countryField.classList.add('field__dirty');
-
-        phoneInput.value = event.target.getAttribute('data-code');
-        phoneField.classList.add('field__dirty');
-
-        setTimeout(() => phoneInput.focus(), 0);
-    };
-
-    countryList.onmouseleave = function() {
-        countryLabel.innerText = 'Country';
-    };
-
-    const fragment = document.createDocumentFragment();
-
-    config.countries.forEach(function onEach(country) {
-        const li = document.createElement('li');
-
-        const flag = document.createElement('span');
-        flag.innerText = country.emoji;
-        flag.className = 'flag';
-
-        const countryName = document.createElement('span');
-        countryName.innerText = country.name;
-        countryName.className = 'country-name';
-
-        const codeValue = country.dialCode || '+';
-
-        const dialCode = document.createElement('span');
-        dialCode.innerText = codeValue;
-        dialCode.className = 'code';
-
-        li.appendChild(flag);
-        li.appendChild(countryName);
-        li.appendChild(dialCode);
-        li.setAttribute('data-name', country.name);
-        li.setAttribute('data-code', codeValue);
-
-        fragment.appendChild(li);
-    });
-
-    countryList.appendChild(fragment);
 
     const countryField = document.createElement('div');
     countryField.id = 'country-field';
@@ -124,7 +87,56 @@ export function render() {
     countryLabel.setAttribute('for', 'country');
     countryLabel.innerText = 'Country';
 
-    const mark = renderSvg('field__mark', downMark);
+    const mark = renderSvg(downMark, 'field__mark');
+
+    const countryList = document.createElement('ul');
+    countryList.id = 'country-list';
+    countryList.className = 'field__dropdown';
+
+    countryList.onmouseover = function(event) {
+        countryLabel.innerText = event.target.getAttribute('data-name');
+    };
+
+    countryList.onmousedown = function(event) {
+        selectCountry(
+            event.target.getAttribute('data-name'),
+            event.target.getAttribute('data-code'),
+        );
+    };
+
+    countryList.onmouseleave = function() {
+        countryLabel.innerText = 'Country';
+    };
+
+    const fragment = document.createDocumentFragment();
+
+    config.countries.forEach(function(country) {
+        const li = document.createElement('li');
+
+        const flag = document.createElement('span');
+        flag.innerText = country.emoji;
+        flag.className = 'flag';
+
+        const countryName = document.createElement('span');
+        countryName.innerText = country.name;
+        countryName.className = 'country-name';
+
+        const codeValue = country.dialCode;
+
+        const code = document.createElement('span');
+        code.innerText = codeValue;
+        code.className = 'code';
+
+        li.appendChild(flag);
+        li.appendChild(countryName);
+        li.appendChild(code);
+        li.setAttribute('data-name', country.name);
+        li.setAttribute('data-code', codeValue);
+
+        fragment.appendChild(li);
+    });
+
+    countryList.appendChild(fragment);
 
     countryField.appendChild(countryInput);
     countryField.appendChild(countryLabel);
@@ -139,7 +151,19 @@ export function render() {
     phoneInput.id = 'phone';
     phoneInput.type = 'tel';
     phoneInput.required = true;
-    phoneInput.oninput = onInput;
+    phoneInput.oninput = function(ev) {
+        const phoneNumber = parsePhoneNumberFromString(phoneInput.value);
+        if (phoneNumber && phoneNumber.isValid()) {
+            phoneInput.value = phoneNumber.formatInternational();
+        } else {
+            phoneField.classList.add('field__error');
+        }
+
+        onInput(ev);
+    };
+    if (state.phone) {
+        phoneInput.value = state.phone;
+    }
 
     const phoneLabel = document.createElement('label');
     phoneLabel.setAttribute('for', 'phone');
@@ -157,6 +181,10 @@ export function render() {
 
     const keepSpan = document.createElement('span');
     keepSpan.innerText = 'Keep me signed in';
+
+    if (state.country && state.phone) {
+        selectCountry(state.country, state.phone);
+    }
 
     keepField.appendChild(keepInput);
     keepField.appendChild(keepSpan);

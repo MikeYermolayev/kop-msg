@@ -61,6 +61,16 @@
         }
     }
 
+    &__error {
+        & > label {
+            color: $red;
+        }
+        & > .field__input {
+            border-color: $red;
+            caret-color: $red;
+        }
+    }
+
     &__dirty {
         & > label {
             top: 0;
@@ -69,11 +79,12 @@
             background-color: #fff;
         }
 
-        & > .field__input:focus + label {
+        &:not(.field__error) > .field__input:focus + label {
             color: $blue;
             font-weight: 500;
         }
     }
+
     &:hover {
         .field__input:not(:focus) {
             border-color: $black;

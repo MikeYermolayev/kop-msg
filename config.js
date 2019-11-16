@@ -200,12 +200,6 @@ export default {
             dialCode: '+591',
         },
         {
-            code: 'BQ',
-            emoji: '🇧🇶',
-            unicode: 'U+1F1E7 U+1F1F6',
-            name: 'Bonaire, Sint Eustatius and Saba',
-        },
-        {
             code: 'BR',
             emoji: '🇧🇷',
             unicode: 'U+1F1E7 U+1F1F7',
@@ -225,12 +219,6 @@ export default {
             unicode: 'U+1F1E7 U+1F1F9',
             name: 'Bhutan',
             dialCode: '+975',
-        },
-        {
-            code: 'BV',
-            emoji: '🇧🇻',
-            unicode: 'U+1F1E7 U+1F1FB',
-            name: 'Bouvet Island',
         },
         {
             code: 'BW',
@@ -359,12 +347,6 @@ export default {
             dialCode: '+238',
         },
         {
-            code: 'CW',
-            emoji: '🇨🇼',
-            unicode: 'U+1F1E8 U+1F1FC',
-            name: 'Curaçao',
-        },
-        {
             code: 'CX',
             emoji: '🇨🇽',
             unicode: 'U+1F1E8 U+1F1FD',
@@ -449,12 +431,6 @@ export default {
             dialCode: '+20',
         },
         {
-            code: 'EH',
-            emoji: '🇪🇭',
-            unicode: 'U+1F1EA U+1F1ED',
-            name: 'Western Sahara',
-        },
-        {
             code: 'ER',
             emoji: '🇪🇷',
             unicode: 'U+1F1EA U+1F1F7',
@@ -474,12 +450,6 @@ export default {
             unicode: 'U+1F1EA U+1F1F9',
             name: 'Ethiopia',
             dialCode: '+251',
-        },
-        {
-            code: 'EU',
-            emoji: '🇪🇺',
-            unicode: 'U+1F1EA U+1F1FA',
-            name: 'European Union',
         },
         {
             code: 'FI',
@@ -1467,12 +1437,6 @@ export default {
             dialCode: '+503',
         },
         {
-            code: 'SX',
-            emoji: '🇸🇽',
-            unicode: 'U+1F1F8 U+1F1FD',
-            name: 'Sint Maarten (Dutch Part)',
-        },
-        {
             code: 'SY',
             emoji: '🇸🇾',
             unicode: 'U+1F1F8 U+1F1FE',
@@ -1499,12 +1463,6 @@ export default {
             unicode: 'U+1F1F9 U+1F1E9',
             name: 'Chad',
             dialCode: '+235',
-        },
-        {
-            code: 'TF',
-            emoji: '🇹🇫',
-            unicode: 'U+1F1F9 U+1F1EB',
-            name: 'French Southern Territories',
         },
         {
             code: 'TG',
