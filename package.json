@@ -4,46 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:webpack": "webpack-dev-server --open",
-    "build:webpack": "NODE_ENV=production webpack",
     "start": "parcel index.html",
-    "build": "parcel build index.html",
+    "build": "parcel build index.html --no-source-maps",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^9.7.1",
-    "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^3.2.0",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "file-loader": "^4.2.0",
-    "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.8.0",
     "parcel-bundler": "^1.12.4",
-    "postcss-loader": "^3.0.0",
     "prettier": "^1.18.2",
     "sass": "^1.23.3",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.0",
     "stylelint": "^11.1.1",
     "stylelint-config-prettier": "^6.0.0",
     "stylelint-config-recommended": "^3.0.0",
     "stylelint-config-recommended-scss": "^4.0.0",
     "stylelint-prettier": "^1.1.1",
-    "stylelint-scss": "^3.12.1",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0",
-    "worker-loader": "^2.0.0"
+    "stylelint-scss": "^3.12.1"
   },
   "dependencies": {
-    "@airgram/web": "^2.1.1",
     "libphonenumber-js": "^1.7.26",
     "lottie-web": "^5.5.9",
-    "pako": "^1.0.10",
-    "telegram-mtproto": "^3.2.11"
+    "pako": "^1.0.10"
   }
 }

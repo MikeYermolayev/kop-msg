@@ -3,12 +3,12 @@ import './login.scss';
 import logoSvg from '../assets/logo.svg';
 import downMark from '../assets/icons/down_svg.html';
 import { renderSvg } from '../utils/renderSvg';
-import { prepareRipple } from '../utils/ripple';
 import { navigate } from '../router';
 import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile';
 import { validate } from '../utils/validate';
 import { createElement } from '../utils/createElement';
-import { telegram } from '../utils/mtproto';
+import { renderSubmit } from '../components/submit';
+import { mtclient } from '../utils/mtclient';
 
 export function render(state) {
     const COUNTRY_LABEL = 'Country';
@@ -74,24 +74,29 @@ export function render(state) {
     const form = document.createElement('form');
     form.onsubmit = function(e) {
         e.preventDefault();
+
         if (validate(phoneInput, phoneLabel, getPhoneError, PHONE_LABEL)) {
-            telegram('auth.sendCode', {
-                phone_number: phoneInput.value,
-                api_id: config.apiId,
-                api_hash: config.apiHash,
-            }).then(function(res) {
-                // navigate('/', {
-                //     step: 1,
-                //     phone: phoneInput.value,
-                //     country: countryInput.value,
-                // });
-            });
+            btn.setSubmit();
+
+            mtclient()
+                .then(function() {
+                    navigate('/', {
+                        step: 1,
+                        phone: phoneInput.value,
+                        country: countryInput.value,
+                    });
+                    btn.resetSubmit();
+                })
+                .catch(function(err) {
+                    btn.resetSubmit();
+                });
         }
     };
 
-    const btn = createElement('button', null, 'submit');
-    btn.innerText = 'NEXT';
-    prepareRipple(btn);
+    const btn = renderSubmit();
+    if (state.country && state.phone) {
+        btn.classList.add('submit__visible');
+    }
 
     const countryField = createElement('div', 'country-field', 'field');
 
@@ -176,9 +181,7 @@ export function render(state) {
     phoneInput.type = 'tel';
     phoneInput.required = true;
     phoneInput.oninput = function(event) {
-        onInput(event);
-
-        if (phoneInput.value.length >= 2 && phoneInput.value.length < 6) {
+        if (phoneInput.value.length >= 2) {
             const country = config.countries.find(function(c) {
                 return (
                     phoneInput.value
@@ -195,6 +198,8 @@ export function render(state) {
             countryInput.value = '';
             countryField.classList.remove('field__dirty');
         }
+
+        onInput(event);
     };
     phoneInput.onblur = function(ev) {
         if (validate(phoneInput, phoneLabel, getPhoneError, PHONE_LABEL)) {

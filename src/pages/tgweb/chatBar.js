@@ -6,6 +6,187 @@ import { prepareRipple } from '../../utils/ripple';
 import { createElement } from '../../utils/createElement';
 import { renderChatList } from './chatList';
 
+const pinnedData = [
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: false,
+        time: '19:23',
+        muted: true,
+        unreadCount: 0,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: true,
+        time: '19:23',
+        muted: false,
+        unreadCount: 10,
+        sent: true,
+        delivered: true,
+    },
+];
+const data = [
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: false,
+        time: '19:23',
+        muted: true,
+        unreadCount: 20,
+        sent: true,
+        delivered: false,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: false,
+        time: '19:23',
+        muted: true,
+        unreadCount: 0,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: true,
+        time: '19:23',
+        muted: true,
+        unreadCount: 0,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: false,
+        time: '19:23',
+        muted: true,
+        unreadCount: 5,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: true,
+        time: '19:23',
+        muted: false,
+        unreadCount: 15,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: false,
+        time: '19:23',
+        muted: true,
+        unreadCount: 0,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: true,
+        time: '19:23',
+        muted: true,
+        unreadCount: 0,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: false,
+        time: '19:23',
+        muted: true,
+        unreadCount: 2,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: true,
+        time: '19:23',
+        muted: true,
+        unreadCount: 1,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: true,
+        time: '19:23',
+        muted: true,
+        unreadCount: 1,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: true,
+        time: '19:23',
+        muted: true,
+        unreadCount: 1,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: true,
+        time: '19:23',
+        muted: true,
+        unreadCount: 0,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: true,
+        time: '19:23',
+        muted: true,
+        unreadCount: 0,
+        sent: true,
+        delivered: true,
+    },
+    {
+        name: 'John Doe',
+        message: 'Feed meeew, please :3',
+        avatar: 'https://cataas.com/cat?' + Math.random(),
+        online: true,
+        time: '19:23',
+        muted: true,
+        unreadCount: 0,
+        sent: true,
+        delivered: true,
+    },
+];
+
 export function renderChatBar(onChatSelect) {
     const chatBar = createElement('div', 'chatBar');
 
@@ -35,14 +216,18 @@ export function renderChatBar(onChatSelect) {
 
     chatBar.appendChild(header);
 
-    const pinnedList = renderChatList(onChatSelect);
+    const lists = createElement('div', 'chatBar__lists');
+
+    const pinnedList = renderChatList(pinnedData, onChatSelect, true);
     pinnedList.id = 'chatBar__pinnedList';
 
-    const list = renderChatList(onChatSelect);
+    const list = renderChatList(data, onChatSelect);
     list.id = 'chatBar__list';
 
-    chatBar.appendChild(pinnedList);
-    chatBar.appendChild(list);
+    lists.appendChild(pinnedList);
+    lists.appendChild(list);
+
+    chatBar.appendChild(lists);
 
     return chatBar;
 }

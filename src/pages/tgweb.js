@@ -8,8 +8,8 @@ export function render() {
     const tgweb = document.createElement('div');
     tgweb.id = 'tgweb';
 
-    const chatBar = renderChatBar(function() {
-        const newChat = renderChat();
+    const chatBar = renderChatBar(function(data) {
+        const newChat = renderChat(data);
         newChat.classList.add('chat');
         tgweb.replaceChild(newChat, activeChat);
         activeChat = newChat;

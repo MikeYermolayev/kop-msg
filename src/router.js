@@ -5,25 +5,15 @@ var app = document.getElementById('app');
 
 const pages = {
     '/': [
-        function() {
-            return import(/* webpackChunkName: "login" */ './pages/login');
-        },
-        function() {
-            return import(/* webpackChunkName: "sms" */ './pages/sms');
-        },
-        function() {
-            return import(
-                /* webpackChunkName: "password" */ './pages/password'
-            );
-        },
-        function() {
-            return import(/* webpackChunkName: "tgweb" */ './pages/tgweb');
-        },
+        import('./pages/login'),
+        import('./pages/sms'),
+        import('./pages/password'),
+        import('./pages/tgweb'),
     ],
 };
 
 function loadPage(page, state) {
-    return pages[page][state.step]().then(function(content) {
+    return pages[page][state.step].then(function(content) {
         clear(app);
         return app.appendChild(content.render(state));
     });

@@ -1,4 +1,12 @@
 @import '../../vars.scss';
 
 #chat {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        background-color: $white;
+        flex-shrink: 0;
+        padding: 0 9px;
+    }
 }

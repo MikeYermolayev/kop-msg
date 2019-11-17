@@ -2,14 +2,16 @@ import './chatList.scss';
 import { createElement } from '../../utils/createElement';
 import { renderChatItem } from './chatItem';
 
-export function renderChatList(onChatSelect) {
+export function renderChatList(data, onChatSelect, isPinned) {
     const chatList = createElement('div', null, 'chatList');
 
-    const item1 = renderChatItem(onChatSelect);
-    const item2 = renderChatItem(onChatSelect);
+    const fragment = document.createDocumentFragment();
 
-    chatList.appendChild(item1);
-    chatList.appendChild(item2);
+    data.forEach(function(item) {
+        fragment.appendChild(renderChatItem(item, onChatSelect, isPinned));
+    });
+
+    chatList.appendChild(fragment);
 
     return chatList;
 }
