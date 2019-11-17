@@ -1,5 +1,5 @@
 export default {
-    apiId: '1137027',
+    apiId: 1137027,
     apiHash: 'a44a496296fa1b3049d128f648ea792a',
     testMtServer: '149.154.167.40:443',
     countries: [
@@ -632,12 +632,6 @@ export default {
             unicode: 'U+1F1ED U+1F1F0',
             name: 'Hong Kong',
             dialCode: '+852',
-        },
-        {
-            code: 'HM',
-            emoji: '🇭🇲',
-            unicode: 'U+1F1ED U+1F1F2',
-            name: 'Heard Island and Mcdonald Islands',
         },
         {
             code: 'HN',
@@ -1415,12 +1409,6 @@ export default {
             unicode: 'U+1F1F8 U+1F1F7',
             name: 'Suriname',
             dialCode: '+597',
-        },
-        {
-            code: 'SS',
-            emoji: '🇸🇸',
-            unicode: 'U+1F1F8 U+1F1F8',
-            name: 'South Sudan',
         },
         {
             code: 'ST',
